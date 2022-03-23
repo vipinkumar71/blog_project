@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # Create your views here.
@@ -57,3 +58,9 @@ def post_detail(request, slug):
                                            'comments': comments,
                                            'new_comment': new_comment,
                                            'comment_form': comment_form})
+
+
+def post_like(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.liked_by.add(request.user)
+    return HttpResponseRedirect(f"/{post.slug}")
